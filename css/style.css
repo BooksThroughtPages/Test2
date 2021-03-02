@@ -1,0 +1,63 @@
+html,body {
+	aheight:100%;
+}
+table {
+}
+td {
+}
+
+label.check input {
+    display: none;
+}
+label.check span {
+    text-align: center;
+    display: inline-block;
+	background-color: lightgreen;
+    color: black;
+    border-radius: 0px;
+    text-transform: uppercase
+}
+
+label.check input:checked+span {
+    border-color: #8f37aa;
+    background-color: #8f37aa;
+    color: #fff
+}
+
+div[class^="col"]{
+
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.form-control:focus {
+	box-shadow: none !important;
+}
+.btn {
+	box-shadow: none !important;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  margin-right:2px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
