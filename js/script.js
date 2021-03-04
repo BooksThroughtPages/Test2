@@ -1,9 +1,4 @@
-
 class Note{
-  //static id = 0
-  //static get Id(){
-  //  return Note.id++
-  //}
  constructor(values, properties){
     this.id = Note.Id
     this.values = values
