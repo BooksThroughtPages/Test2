@@ -8,25 +8,27 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
-	<div class="container-fluid d-flex flex-column h-100 bg-light">
-		<div class="row">
-			<div class="p-0 bg-warning" id="headerRow">
-			</div>
-		</div>
-		<div class="row d-flex mt-auto h-100 overflow-auto">
-			<div class="p-0 bg-primary" id="notesRow">
-			</div>
-		</div>
-		<div class="row">
-			<div class="p-0 col-12" id="inputRow">
-			</div>
-		</div>
-	</div>
 	
+	<form style="display:none;"id="testForm"></form>
+	<!--
+	<div class="tui">
+		<div class="tui1">1</div>
+		<div class="tui2">2</div>
+		<div class="tui3">3</div>
+	</div>
+	-->
+	<div class="ui">
+    	<div class="uiHeader">
+    	</div>
+		<div class="uiNotesContainerGrid uiNotesContainer"></div>
+		<div class="uiFooter"><button class="addNoteButton">Dodaj</button></div>
+	</div>
 		<script src="js/external/jquery-3.5.1.min.js"></script>
+		<script src="js/external/hammer.js"></script>
 		<script src="js/external/bootstrap.bundle.min.js"> </script>
+		<script src="js/external/decimal.min.js"></script>
 		
-		<script src="js/html.js"></script>
-		<script src="js/script2.js"></script>
+		<script type="module" src="js/main.mjs"></script>
+		<script type="module" src="js/note.mjs"></script>
 	</body>
 </html>

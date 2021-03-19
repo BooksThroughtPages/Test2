@@ -1,0 +1,68 @@
+<table>
+          <tr class="padding">
+            <td>
+              <button class="index">11</button>
+            </td>
+            <td>
+              <div>a</div>
+            </td>
+            <td>
+              <!--
+              <table>
+                <tr>
+                  <td>
+              <label style="position:relative;width:100%;">
+                <input style="width:100%;" class="priceInput" type="number" value="${this.values.price.toFixed(2)}"/>
+                <!--
+                <span class="label priceOfAllItemsContainer">Suma: <span class="priceTotal priceOfAllItems"></span> Zł<br/><span class="unitPriceValue"></span> Zł za <span class="unitType"></span></span>
+                -->
+                <!--
+                <span class="label"><table><tr><td></td><td></td></tr><tr><td>∑ <span class="priceTotal priceOfAllItems"></span> Zł</td><td>, <span class="unitPriceValue"></span> Zł za <span class="unitType"></span></td></tr></table></span>
+                -->
+              </label>
+              </td>
+              <td>
+              <label style="position:relative;">
+                <input style="width:3em;" class="quantityInput" type="number" value="${this.values.quantity.toFixed(2)}"/>
+                <!--
+                <span class="label">Ilość</span>
+                -->
+              </label>
+                </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label style="position:relative;">
+              <input style="width:4em;" class="unitQuantity" type="number" value="${this.quantityOfUnitItemFormated}" placeholder="1"/>
+              <span class="label" style="font-size:xx-small;">Ilość jednostkowa</span>
+              </label><select class="unitQuantityType">
+                <option value="szt" selected>szt</option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
+                <option value="l">l</option>
+              </select>
+                    </td>
+                  </tr>
+                </table>
+                -->
+            </td>
+            <td><!--
+              <label style="position:relative;">
+              <input class="unitQuantity" type="number" value="${this.quantityOfUnitItemFormated}" placeholder="1"/>
+              <span class="label"><span class="unitPriceValue"></span> Zł za <span class="unitType"></span></span>
+              </label>
+              <select class="unitQuantityType">
+                <option value="szt" selected>szt</option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
+                <option value="l">l</option>
+              </select>-->
+              <!--<span>cena jednostkowa <span class="unitPriceValue"></span> Zł za <span class="unitType"></span></span>-->
+            </td>
+            <td>
+              <button class="noteDeleteButton">U</button>
+            </td>
+          </tr>
+        </table>

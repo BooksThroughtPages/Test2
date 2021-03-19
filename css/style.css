@@ -1,63 +1,119 @@
-html,body {
+html, body{
 	height:100%;
 }
-table {
+/*
+.tui{
+	display:flex;
+	flex-direction:column;
+	border:2px solid red;
+	height:100%;
 }
-td {
+.tui1{
+	
+}
+.tui2{
+	border:2px solid green;
+}
+.tui3{
+	
+}
+*/
+.ui{
+	/*
+	display:flex;
+	flex-direction:column;
+	justify-content:stretch;
+	*/
+	
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows:fit-content(0) auto fit-content(0);
+	height:100%;
+}
+.uiNotesContainerGrid{
+	display:grid;
+	grid-template-columns:1fr;
+	grid-template-rows: fit-content(0);
+	grid-auto-rows:fit-content(0);
+	row-gap:0.1em;
+	
+	background-color:lightgray!important;
+	
+	/*border:2px solid red;*/
+	
+}
+.uiHeader{
+	background-color:white;
+	position:sticky;
+	display:grid;
+	grid-template-columns:1fr 1fr;
+	grid-auto-rows:1fr;
+	top:0;
+}
+.hd1, .hd2, .hd3, .hd4{
+	text-align:right;
+}
+.uiFooter{
+	position:sticky;
+	position:-webkit-sticky;
+	bottom:0;
+	background-color:green;
+	text-align:right;
+}
+.notePriceInput{
+}
+.priceInput{
+	grid-column-start:1;
+	grid-column-end:3;
+	grid-row-start:1;
+	z-index:0;
+}
+.noteInput{
+}
+.noteContainer{
+	display: grid;
+	grid-template-columns: 8fr 2fr 2fr;
+	background-color:lightgreen;
+}
+.noteHeader{
+	display:grid;
+	grid-template-columns:1fr 4fr 5fr 5fr;
+	grid-column-start:1;
+	grid-column-end:4;
+}
+.noteHeaderIndex{
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
+}
+.noteHeaderSumQuantity{
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
+}
+.noteHeaderUnitPrice{
+	text-align:right;
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
+}
+.noteHeaderSumPrice{
+	text-align:right;
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
 }
 
-label.check input {
-    display: none;
+input[type="text"], input[type="number"]{
+	padding:0;
+	width:100%;
+	margin:0;
 }
-label.check span {
-    text-align: center;
-    display: inline-block;
-	background-color: lightgreen;
-    color: black;
-    border-radius: 0px;
-    text-transform: uppercase
+input[type="number"]{
+	text-align:right;
 }
 
-label.check input:checked+span {
-    border-color: #8f37aa;
-    background-color: #8f37aa;
-    color: #fff
-}
-
-div[class^="col"]{
-
-}
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
-    margin: 0;
 }
- 
 input[type="number"] {
     -moz-appearance: textfield;
-}
-.form-control:focus {
-	box-shadow: none !important;
-}
-.btn {
-	box-shadow: none !important;
-}
-
-.arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  margin-right:2px;
-}
-
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
 }

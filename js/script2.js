@@ -1,78 +1,183 @@
 let notesState = {
   notes: []
-  ,noteId: 0
-  ,pricesSum:0
+  ,pricesSum:function(type){
+    let sum = 0
+    if(type==="selected"){
+      for(let e of this.notes){
+        if(e.properties.computeFieldsVisible === false){
+          sum+=e.sum
+        }
+      }
+    }else{
+    for(let e of this.notes){
+      sum += e.sum
+    }
+    }
+    return sum
+  }
+  ,dpricesSum:function(type){
+    let sum = new Decimal(0)
+    if(type==="selected"){
+      for(let e of this.notes){
+        if(e.properties.computeFieldsVisible === false){
+          sum=sum.add(e.dsum)
+        }
+      }
+    }else{
+    for(let e of this.notes){
+      sum = sum.add(e.dsum)
+    }
+    }
+    return sum
+  }
 }
+
+let getId = (()=>{let id = 0;return ()=>{return id++}})()
+
 
 class Note{
   constructor(properties){
-    this.values = properties?.values??{text:"",quantity:0,price:0}
-    this.properties = properties?.properties??{computeFieldsVisible:true,id:notesState.noteId++}
-    notesState.pricesSum += (parseFloat(this.values.price)||0)*(parseFloat(this.values.quantity)||0)
+    this.values = properties?.values??{text:"",quantity:0,dquantity:new Decimal(0),price:0,dprice:new Decimal(0)}
+    this.properties = properties?.properties??{computeFieldsVisible:true,id:getId()}
   }
   get id() { return this.properties.id }
   get text(){ return this.values.text }
   get price(){ return this.values.price }
+  get dprice(){ return this.values.dprice }
   get quantity(){ return this.values.quantity }
+  get dquantity() { return this.values.dquantity }
   get sum() { 
     return (parseFloat(this.values.price)||0)*(parseFloat(this.values.quantity)||0)
   }
+  get dsum(){
+    return this.dprice.mul(this.dquantity)
+  }
   set price(priceValue){
-    let tmp = this.sum
     this.values.price = priceValue
-    this.updatePricesSum(tmp)
-    
+  }
+  set dprice(priceValue){
+    console.log("pv:", priceValue)
+    try{
+    this.values.dprice = new Decimal(priceValue)
+    }catch(e){
+      this.values.dprice = new Decimal(0)
+    }
   }
   set quantity(quantityValue){
-    let tmp = this.sum
     this.values.quantity = quantityValue
-    this.updatePricesSum(tmp)
-    
+  }
+  set dquantity(quantityValue){
+    try{
+    this.values.dquantity = new Decimal(quantityValue)
+    }catch(e){
+      this.values.dquantity = new Decimal(1)
+    }
   }
   updatePricesSum(oldPriceOfItem){
-    notesState.pricesSum -= oldPriceOfItem
-    notesState.pricesSum += this.sum
-    renderHeader()
   }
   
   render(){
     let template = `
-    <table class="table table-borderless m-0 id=${this.id}">
-      <tr class="d-flex mt-2">
-        <td class="col-1 p-0 bg-warning">
-          <button class="btn btn-success w-100 h-100 p-0">1</button>
+      <table class="">
+      <tr class="" style="">
+        <td class="">
+          <button class="toogleSelected">1</button>
         </td>
-        <td class="col-5 p-0">
-          <div class="w-100">${this.text}</div>
+        <td class="noteTextValue" style="overflow-wrap:anywhere;">
+          <div contentEditable="true" class="">
+            ${this.text}
+          </div>
         </td>
-        <td class="col-3 p-0 price">
-          <input class="form-control w-100" type="number" value="${this.price}"/>
+        <td class="" style="">
+          <form class="smbForm">
+          <input class="price" type="number" value="${this.dprice.toFixed(2)}"
+          style="${this.properties.computeFieldsVisible?'':'background-color:gray;'}"
+          />
+          <span>suma <span id="priceSuma">${this.dsum.toFixed(2)}</span></span>
+          </form>
         </td>
-        <td class="col-2 p-0 quantity">
-          <input class="form-control w-100" placeholder type="number" value="${this.quantity}"/>
+        <td class=""
+          style="">
+          <form class="smbForm">
+          <input class="quantity" type="number" value="${this.dquantity.toFixed(2)}"
+          style="${this.properties.computeFieldsVisible?'':'background-color:gray;'}"/>
+          </form>
         </td>
-        <td class="col-1 p-0">
-          <button class="btn btn-danger w-100 removeNote">U</button>
+        <td class="">
+          <button class="removeNote">U</button>
         </td>
       </tr>
     </table>
     `
     let node = $(template)
+    
+    node.find(".toogleSelected").on("click", (e,id=this.id)=>{
+      let tmp = notesState.notes.find(e=>e.id===id)
+      tmp.properties.computeFieldsVisible = !tmp.properties.computeFieldsVisible 
+      renderHeader()
+      renderNotes()
+    })
+    
     node.find(".price").on("input", (e,id=this.id)=>{
-      notesState.notes.find(e=>e.id===id).price = parseFloat(e.target.value)||0
+      notesState.notes.find(e=>e.id===id).dprice = e.target.value
+      updateNotes()
+      renderHeader()
     })
+    let tmp
+    node.find(".smbForm").on("submit", (e,id=this.id)=>{
+      e.preventDefault()
+      e.stopPropagation()
+      
+      console.log(e)
+      e.target.firstElementChild.value = e.target.firstElementChild.value===""?new Decimal(tmp).toFixed(2):e.target.firstElementChild.value
+      notesState.notes.find(e=>e.id===id)[$(e.target.firstElementChild).attr("class")==="price"?"dprice":"dquantity"] = e.target.firstElementChild.value
+      console.log("submiting", tmp)
+      
+      updateNotes()
+      renderHeader()
+      $("#inputRow").find("#inputTekst").trigger("click").trigger("focus")
+    })
+    
+    node.find(".price").on("focus", (e,id=this.id)=>{
+      tmp = e.target.value
+      e.target.value = ""
+      e.target.setAttribute("placeholder", new Decimal(tmp).toFixed(2))
+      
+      renderHeader()
+    })
+    node.find(".price").on("blur", (e)=>{
+      //e.target.value = e.target.value===""?tmp:e.target.value
+      let numTmp
+      try{
+        numTmp = new Decimal(e.target.value)
+      }catch(e){
+        numTmp = tmp
+      }
+      e.target.value = e.target.value===""?new Decimal(tmp).toFixed(2):numTmp.toFixed(2)
+      renderHeader()})
     node.find(".quantity").on("input", (e,id=this.id)=>{
-      notesState.notes.find(e=>e.id===id).quantity = parseFloat(e.target.value)||0
+      try{
+        notesState.notes.find(e=>e.id===id).dquantity = new Decimal(e.target.value)
+      }catch(e){
+        notesState.notes.find(e=>e.id===id).dquantity = new Decimal(0)
+      }
+      updateNotes()
+      renderHeader()
     })
+    node.find(".quantity").on("focus", (e,id=this.id)=>{
+      tmp = e.target.value
+      e.target.value = ""
+      e.target.setAttribute("placeholder", tmp)
+      
+      renderHeader()
+    })
+    node.find(".quantity").on("blur", (e)=>{e.target.value = e.target.value===""?new Decimal(tmp).toFixed(2):new Decimal(e.target.value).toFixed(2);renderHeader()})
     node.find(".removeNote").on("click", (e,id=this.id)=>{
-      let index = undefined
-          ,tmp = notesState.notes.find(
-            (e,i)=>{if(e.id===id){index = i;
-            notesState.pricesSum -= e.sum
-            console.log("removing ", i)
-            return true}})
-  
-      notesState.notes.splice(index, 1)
+      notesState.notes.splice(
+        notesState.notes.findIndex(e=>e.id===id)
+        ,1
+      )
+      
       renderHeader()
       renderNotes()
     })
@@ -84,15 +189,25 @@ class Note{
 
 function renderHeader(){
   let template = `
-    <table class="table table-borderless m-0">
-      <tr class="d-fle">
-        <td class="p-0 col-7 bg-danger">
-          
+    <table class="">
+      <tr class="">
+        <td class="">
+          Koszty wszystkich
         </td>
-        <td class="p-0 col-3 bg-success">
-          <input class="form-control w-100" type="text" disabled value="${notesState.pricesSum.toFixed(3)}"/>
+        <td class="">
+          <input class="" type="text" disabled value="${notesState.dpricesSum().toFixed(2)}"/>
         </td>
-        <td class="col-2 bg-light">
+        <td class="">
+        </td>
+      </tr>
+      <tr class="">
+        <td class="">
+          Koszty oznaczonych
+        </td>
+        <td class="">
+          <input class="" type="text" disabled value="${notesState.dpricesSum('selected').toFixed(2)} a pozostałych ${notesState.dpricesSum().sub(notesState.dpricesSum('selected')).toFixed(2)}"/>
+        </td>
+        <td class="">
         </td>
       </tr>
     </table>
@@ -103,31 +218,38 @@ function renderHeader(){
 
 function renderNotes(){
   $("#notesRow").empty()
-  notesState.pricesSum = 0
   for(let n of notesState.notes) {
-    notesState.pricesSum += n.sum
     $("#notesRow").append(n.render())
   }
 }
-
+function updateNotes(){
+  let prevNode = $("#notesRow").find("table")
+  notesState.notes.forEach((n,i)=>{
+    let sum = n.dsum
+        ,sumEl = $(prevNode[i]).find("#priceSuma")
+    if(sum !== new Decimal(sumEl.text()) ){
+      sumEl.text(`${sum.toFixed(2)}`)
+    }
+  })
+}
 function renderFooter(){
   let template = `
     <form id="formDodaj">
-    <table class="table table-borderless m-0">
-      <tr class="d-flex">
-        <td class="col-7 p-0">
-          <input id="inputTekst" style="height:2.5rem;padding-left:0.35rem" class="form-control" placeholder/>
+    <table class="">
+      <tr class="">
+        <td class="">
+          <input id="inputTekst" style="" class=""/>
         </td>
-        <td class="col-3 p-0">
-          <input id="inputCena" type="number" step="any" style="height:2.5rem;padding-left:0.35rem;" class="form-control" placeholder/>
+        <td class="">
+          <input id="inputCena" type="number" step="any" style="" class="" placeholder="0"/>
         </td>
-        <td class="col-2 p-0">
-          <input id="inputQuantity" type="number" step="any" style="height:2.5rem;padding-left:0.35rem;" class="form-control" placeholder/>
+        <td class="">
+          <input id="inputQuantity" type="number" placeholder="1" step="any" style="" class=""/>
         </td>
       </tr>
-      <tr class="d-flex">
-        <td class="col-12 p-0">
-           <button id="btnDodaj" type="submit" class="btn btn-success w-100">Dodaj</button>
+      <tr class="">
+        <td class="">
+           <button id="btnDodaj" type="submit" class="">Dodaj</button>
         </td>
       </tr>
     </table>
@@ -138,15 +260,37 @@ function renderFooter(){
   let fnDodaj = (e)=>{
     e.preventDefault()
     e.stopPropagation()
+    
     let inputFields = {
       text: $(e.target).find("#inputTekst")
       ,price: $(e.target).find("#inputCena")
       ,quantity: $(e.target).find("#inputQuantity")
     }
+    
+    //let p = parseFloat(inputFields.price.val())
+    //    ,q = parseFloat(inputFields.quantity.val())
+    let p, q
+    
+    try{
+      p = new Decimal(inputFields.price.val())
+    }catch(e){
+      p = new Decimal(0)
+    }
+    
+    try{
+      q = new Decimal(inputFields.quantity.val())
+    }catch(e){
+      q = new Decimal(1)
+    }
+    //p = isNaN(p)?0:p
+    //q = isNaN(q)?1:q
+    
     notesState.notes.push(new Note({values:{
                                       text: inputFields.text.val()
-                                      ,price: inputFields.price.val()
-                                      ,quantity: inputFields.quantity.val()
+                                      ,price: 0
+                                      ,dprice: p
+                                      ,quantity: 1
+                                      ,dquantity: q
                                       }
                                     })
     )
@@ -161,10 +305,12 @@ function renderFooter(){
   $("#formDodaj").on("submit", fnDodaj)
 }
 
-notesState.notes.push(new Note({values:{text:"Orzechy brazylijskie",price:39.99,quantity:1}}))
-
-
-
+function chainFunctions(){
+  console.log("chaining", arguments)
+  let v = arguments
+  return (x = v)=>{console.log(v);for(a of v){a()}}
+}
+//chainFunctions(renderHeader, renderNotes).call()
 renderHeader()
 renderNotes()
 renderFooter()

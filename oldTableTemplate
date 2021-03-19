@@ -1,0 +1,29 @@
+<table>
+          <tr class="padding">
+            <td>
+              <!--<button class="index">11</button>-->
+            </td>
+            <td>
+              <div>a</div>
+            </td>
+            <td>
+              <input style="width:3em;" class="priceInput" type="number" value="${this.values.price.toFixed(2)}"/>
+              <input style="width:3em;" class="quantityInput" type="number" value="${this.values.quantity.toFixed(2)}"/>
+              <!--
+              <input style="width:4em;" class="unitQuantity" type="number" value="${this.quantityOfUnitItemFormated}" placeholder="1"/>
+              <select class="unitQuantityType">
+                <option value="szt" selected>szt</option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
+                <option value="l">l</option>
+              </select>
+              -->
+            </td>
+            <td>
+            </td>
+            <td>
+              <!--<button class="noteDeleteButton">U</button>-->
+            </td>
+          </tr>
+        </table>

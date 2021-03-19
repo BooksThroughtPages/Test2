@@ -1,0 +1,89 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.container-fluid{
+	background-color:#d5dadd;
+}
+ 
+#uiNotesContainer{
+	background-color:#60d394;
+}
+
+.noteRow{
+	background-color:#aaf683;
+	margin-bottom:0.1rem;
+	padding: 0.2rem;
+}
+ 
+.priceInputValue{
+	font-size: calc(1.2rem + 2.3vw);
+	position: absolute;
+	pointer-events: none;
+	left: 0;
+	top: calc(-0.2rem);
+	
+}
+
+input[type="text"]{
+	-moz-appearance: textfield;
+    text-align: Left;
+    height: calc(1.1rem + 3.5vw);
+    padding: 0;
+    margin: 0;
+    box-shadow: none!important;
+    word-break:break-all;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+    text-align: right;
+    font-size: calc(1.2rem + 2.3vw);
+    height: calc(1.1rem + 3.5vw);
+    line-height: 0;
+    padding: 0;
+    box-shadow: none!important;
+}
+
+.priceInputCol, .quantityInputCol {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0;
+}
+
+.priceOfAllItems{
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
+}
+
+.topNoteRow{
+	font-weight: bold;
+	font-size: calc(0.7rem + 0.5vw )
+}
+
+body{
+	background-color:white;
+}
+.noteFont{
+	font-size: calc(1.1rem + 2vw);
+}
+
+.noteHeader{
+	background-color:lightgreen;
+}
+.noteFooter{
+	background-color:lightgreen;
+	margin-bottom: calc(0.2em + 0.3vw);
+	vertical-align: middle;
+}
+.noteCol{
+	abackground-color:white;
+	line-break: anywhere;
+	font-size: calc(0.21rem + 3.0vw );
+}
+.priceUnitNode{
+	font-weight: bold!important;
+	font-size: calc(1em + 0.36vw )
+	
+}
